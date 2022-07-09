@@ -1,0 +1,77 @@
+#include<LiquidCrystal.h>
+LiquidCrystal lcd(3,4,5,6,7,11);
+int fre =2000;
+int z=0;
+int gas=100;
+void setup()
+{
+  lcd.begin(16,2);
+  pinMode(A2,INPUT);
+  pinMode(2,OUTPUT);
+  pinMode(9,OUTPUT);
+  pinMode(1,INPUT);
+}
+void loop()
+{
+  int y=analogRead(A1);
+  int x=digitalRead(1);
+  int z=analogRead(A2);
+  float temp=(y*0.4882)-50;
+  if (x==HIGH)
+  {
+    lcd.setCursor(0,1);
+lcd.print("Danger ZONE");
+19
+ delay(2000);
+    lcd.clear();
+    digitalWrite(9,HIGH);
+  }
+  else
+  {
+     lcd.setCursor(0,1);
+    lcd.print("SAFE ZONE");
+   delay(2000);
+    lcd.clear();
+    digitalWrite(9,LOW);
+  } 
+  if(z>gas)
+  {
+   lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("POISONOUS GASES");
+    tone(2,523,1000);
+ }
+ else
+  {
+     lcd.setCursor(0,0);
+    lcd.print("NO GASES");
+ }
+  if(temp>=50)
+  {
+    lcd.setCursor(0,0);
+    lcd.print("Temp=");
+    lcd.println(temp);
+    tone(2,fre);
+
+ }
+  else
+  {
+    lcd.setCursor(0,0);
+    lcd.print("temp=");
+    lcd.println(temp);
+  }
+  
+  if (temp>=50&&z>gas&&x==HIGH)
+  {
+   lcd.setCursor(0,1);
+    lcd.print("Temp=");
+    lcd.println(temp);
+   lcd.setCursor(0,2);
+   lcd.print("POISONOUS GASES");
+   lcd.setCursor(0,0);
+   lcd.print("DANGER ZONE");
+   tone(2,fre);
+  
+}
+ 
+}
